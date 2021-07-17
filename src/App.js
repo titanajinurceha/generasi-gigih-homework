@@ -1,12 +1,12 @@
-import MusicContent from "./components/MusicContent";
-import data from "./data/playlist";
+import Playlist from "./components/Playlist";
+import data from "./data/allplaylist";
 
 function App() {
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Create Playlist</h1>
       <div className="playlistContainer">
-        <MusicContent data={data} />
+        <Playlist data={data} />
       </div>
     </div>
   );
