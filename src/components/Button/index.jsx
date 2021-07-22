@@ -1,10 +1,14 @@
-import style from "./style.module.css";
-const Button = ({ children, ...props}) => {
-    return (
-        <button className={style.btn} {...props}>
-            {children}
-        </button>
-    );
-};
+import React from "react";
 
-export default Button;
+export default function Button(props){
+    return (
+        <button
+         onClick={props.onClick}
+         className={props.className}
+         style={props.style}
+         type="button"
+        >
+            {props.value}
+        </button>
+    )
+}
