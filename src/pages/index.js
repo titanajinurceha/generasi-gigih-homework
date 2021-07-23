@@ -1,5 +1,5 @@
 import Landingpage from "./Landingpage";
-import Playlist from "../components/Playlist";
+import Playlist from "../pages/Playlist";
 import { useState } from "react";
 
 const Index = () => {
