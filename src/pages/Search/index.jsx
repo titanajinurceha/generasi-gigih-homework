@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MusicContent from "../../components/MusicContent";
 import Style from "./style.module.css";
 
-export default function Playlist(props) {
+export default function Search(props) {
   const [result, setResult] = useState(null);
   const [search, setSearch] = useState("");
   const [trackSelected, setTrackSelected] = useState([]);
