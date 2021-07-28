@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MusicContent from "../../components/MusicContent";
+import MusicContent from "../../components/Track";
 import Style from "./style.module.css";
 
 export default function Search(props) {

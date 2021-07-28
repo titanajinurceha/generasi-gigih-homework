@@ -1,5 +1,5 @@
 import Landingpage from "./Landingpage";
-import Search from "./Search/index.jsx";
+import CreatePlaylist from "./CreatePlaylist";
 import { useState } from "react";
 import "./style.module.css";
 
@@ -14,7 +14,7 @@ const Index = () => {
     };
 
     return isLogin.status ? (
-        <Search params={isLogin.params} />
+        <CreatePlaylist params={isLogin.params} />
     ) : (
         <Landingpage onLogin={getAccessToken} />
     )

@@ -3,7 +3,7 @@ import ImgCover from "../ImgCover";
 import DescTittle from "../DescTittle";
 import Style from "./style.module.css";
 
-export default function MusicContent( height, imgUrl, title, artistName, albumName, selected, onSelected, onDeselected ){
+export default function Track( height, imgUrl, title, artistName, albumName, selected, onSelected, onDeselected ){
     return (
         <div className={Style.trackcard}>
             <ImgCover height={height} url={imgUrl} />

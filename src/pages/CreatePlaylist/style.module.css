@@ -1,0 +1,23 @@
+.rowCenter{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.inputText{
+    font-size: 20px;
+    margin-right: 0.5em;
+}
+
+.searchButton{
+    padding: 0.5em;
+}
+
+.headerWrapper{
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    padding: 1em;
+}
