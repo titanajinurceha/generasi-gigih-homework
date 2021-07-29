@@ -5,7 +5,7 @@ import TrackList from "../../components/TrackList";
 import FormAddPlaylist from "../../components/FormAddPlaylist";
 import Style from "./style.module.css";
 
-export default function CreatePlaylist(props) {
+export default function CreatePlaylist() {
   const [result, setResult] = useState(null);
   const [search, setSearch] = useState("");
   const [user, setUser] = useState({});
@@ -19,7 +19,7 @@ export default function CreatePlaylist(props) {
   useEffect(() => {
     getUser();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user_access_token !== ""]);
 
   const getUser = () => {
     fetch(`https://api.spotify.com/v1/me`, {
