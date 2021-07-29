@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Track from "../../components/Track";
 import TrackList from "../../components/TrackList";
 import FormAddPlaylist from "../../components/FormAddPlaylist";
@@ -13,6 +14,7 @@ export default function CreatePlaylist(props) {
     title: "",
     description: "",
   });
+  const user_access_token = useSelector((state) => state.user.access_token)
 
   useEffect(() => {
     getUser();
@@ -21,7 +23,7 @@ export default function CreatePlaylist(props) {
 
   const getUser = () => {
     fetch(`https://api.spotify.com/v1/me`, {
-      headers: { Authorization: "Bearer " + props.params.access_token },
+      headers: { Authorization: "Bearer " + user_access_token },
     })
       .then((response) => response.json())
       .then((response) => {
@@ -31,7 +33,7 @@ export default function CreatePlaylist(props) {
 
   const getSearchResult = () => {
     fetch(`https://api.spotify.com/v1/search?q=${search}&type=track`, {
-      headers: { Authorization: "Bearer " + props.params.access_token },
+      headers: { Authorization: "Bearer " + user_access_token },
     })
       .then((response) => response.json())
       .then((response) => setResult(response.tracks));
@@ -41,7 +43,7 @@ export default function CreatePlaylist(props) {
     return fetch(`https://api.spotify.com/v1/users/${user.id}/playlists`, {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + props.params.access_token,
+        Authorization: "Bearer " + user_access_token,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
@@ -59,7 +61,7 @@ export default function CreatePlaylist(props) {
     fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + props.params.access_token,
+        Authorization: "Bearer " + user_access_token,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
