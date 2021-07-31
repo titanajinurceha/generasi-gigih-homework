@@ -1,4 +1,4 @@
-import MusicContent from "../MusicContent";
+import MusicContent from "../Track";
 const Playlist = ({data}) =>{
     return(
         <div className="playlistContainer">
