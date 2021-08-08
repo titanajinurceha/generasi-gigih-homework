@@ -1,43 +1,39 @@
-import React from "react";
-import Button from "../../components/Button";
+import React, { useEffect } from "react";
+
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import {
+  loginAuthorizeSpotify,
+  getAccessTokenFromURL,
+} from "../../lib/spotifyAuth";
+
+import { getProfile } from "../../lib/spotifyApi";
+
+import { login, storeUserData } from "../../redux/userSlice";
+
 import Style from "./style.module.css";
 
 export default function Landingpage() {
-  const generateRandomString = (length) => {
-    let result = "";
-    let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
+  let history = useHistory();
+  const dispatch = useDispatch();
 
-  const loginSpotify = () => {
-    const state = generateRandomString(16);
-    localStorage.setItem("spotify_auth_state", state);
-    const scope = "playlist-modify-private user-read-private user-read-email";
-    let url = "https://accounts.spotify.com/authorize";
-    url += "?response_type=token";
-    url += `&client_id=${encodeURIComponent(
-      process.env.REACT_APP_SPOTIFY_CLIENT_ID
-    )}`;
-    url += `&scope=${encodeURIComponent(scope)}`;
-    url += `&redirect_uri=${encodeURIComponent(
-      process.env.REACT_APP_REDIRECT_URI
-    )}`;
-    url += `&state=${encodeURIComponent(state)}`;
-    window.location = url;
-  };
-  
+  useEffect(() => {
+    if (window.location.hash) {
+      const { access_token } = getAccessTokenFromURL(window.location.hash);
+      dispatch(login(access_token));
+      getProfile(access_token).then((data) => dispatch(storeUserData(data)));
+      history.push("/create-playlist");
+    }
+  }, [dispatch, history]);
+
   return (
-    <div className={Style.container}>
-      <Button
-        className={Style.button}
-        value="Login"
-        onClick={() => loginSpotify()}
-      />
+    <div className={Style.wrapperHome}>
+      <div className={Style.banner}>
+        <h1>Music Player</h1>
+        <p>welcome to landing page</p>
+        <button onClick={loginAuthorizeSpotify}>Login</button>
+      </div>
     </div>
   );
 }

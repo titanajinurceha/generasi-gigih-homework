@@ -1,168 +1,117 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import Track from "../../components/Track";
+import React, { useState } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+
+import SearchBar from "../../components/searchBar";
+import FormCreatePlaylist from "../../components/formCreatePlaylist";
 import TrackList from "../../components/TrackList";
-import FormAddPlaylist from "../../components/FormAddPlaylist";
+import TrackStructure from "../../components/trackStructure";
+import Navbar from "../../components/layout/navbar";
+
+import { storeTrackList } from "../../redux/tracklistSlice";
+
 import Style from "./style.module.css";
 
+import {
+  getSearchTracks,
+  createNewPlaylist,
+  storeTracksToNewPlaylist,
+} from "../../lib/spotifyApi";
+
 export default function CreatePlaylist() {
-  const [result, setResult] = useState(null);
+  const token = useSelector((state) => state.user.accessToken);
+  const userID = useSelector((state) => state.user.data.id);
+  const tracks = useSelector((state) => state.tracks.tracksList);
+
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const [search, setSearch] = useState("");
-  const [user, setUser] = useState({});
-  const [tracksSelected, setTracksSelected] = useState([]);
-  const [playlistForm, setPlaylistForm] = useState({
-    title: "",
+  const [selectedTracks, setSelectedTracks] = useState([]);
+
+  const [postPlaylist, setPostPlaylist] = useState({
+    name: "",
     description: "",
+    public: false,
+    collaborative: false,
   });
-  const user_access_token = useSelector((state) => state.user.access_token)
 
-  useEffect(() => {
-    getUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user_access_token !== ""]);
-
-  const getUser = () => {
-    fetch(`https://api.spotify.com/v1/me`, {
-      headers: { Authorization: "Bearer " + user_access_token },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setUser(response);
+  const buttonHandleSearch = () => {
+    setIsLoading(true);
+    if (search === "") {
+      alert("Search Cannot Be Empty");
+    } else {
+      getSearchTracks(search, token).then((data) => {
+        dispatch(storeTrackList(data.tracks.items));
+        setIsLoading(false);
       });
+      setSearch("");
+    }
   };
 
-  const getSearchResult = () => {
-    fetch(`https://api.spotify.com/v1/search?q=${search}&type=track`, {
-      headers: { Authorization: "Bearer " + user_access_token },
-    })
-      .then((response) => response.json())
-      .then((response) => setResult(response.tracks));
-  };
-
-  const createPlaylist = () => {
-    return fetch(`https://api.spotify.com/v1/users/${user.id}/playlists`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + user_access_token,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        name: playlistForm.title,
-        description: playlistForm.description,
-        public: false,
-      }),
-    })
-      .then((response) => response.json())
-      .catch((err) => alert(err));
-  };
-
-  const addTrackToPlaylist = (playlistID) => {
-    fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + user_access_token,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        uris: tracksSelected,
-      }),
-    })
-      .then((response) => response.json())
-      .catch((err) => alert(err));
-  };
-
-  const onDeselect = (trackURI) => {
-    const newTracksSelected = tracksSelected.filter(
-      (track) => track !== trackURI
-    );
-    setTracksSelected([...newTracksSelected]);
-  };
-
-  const onSelect = (trackURI) => {
-    setTracksSelected([...tracksSelected, trackURI]);
-  };
-
-  const handleOnChange = (input) => {
-    const { name, value } = input.target;
-    setPlaylistForm({ ...playlistForm, [name]: value });
-  };
-
-  const handleOnSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    const playlist = await createPlaylist();
-    addTrackToPlaylist(playlist.id);
-    alert("Playlist created");
-    clearState();
-  };
+    if (selectedTracks.length <= 0) {
+      alert("You have to selected song first");
+    } else {
+      createNewPlaylist(userID, token, postPlaylist).then((newPlaylist) =>
+        storeTracksToNewPlaylist(newPlaylist.id, token, selectedTracks).then(
+          (data) => console.log(data)
+        )
+      );
 
-  const clearState = () => {
-    setTracksSelected([]);
-    setPlaylistForm({
-      title: "",
-      description: "",
-    });
+      alert("Create New Playlist Has Been Successfully");
+
+      setPostPlaylist({
+        name: "",
+        description: "",
+      });
+      setSelectedTracks([]);
+    }
   };
 
   return (
-    <>
-      <h1 style={{ textAlign: "center" }}>Playlist Search</h1>
-      <div className={Style.rowCenter}>
-        <input
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-          className={Style.inputText}
-          type="text"
-          name="search"
-        />
-        <button
-          onClick={() => getSearchResult()}
-          className={Style.searchButton}
-          type="button"
-        >
-          Search
-        </button>
-      </div>
-      <center>
-        <h2>Create your playlist</h2>
-        <div className={Style.headerWrapper}>
-          <FormAddPlaylist
-            data={playlistForm}
-            handleOnSubmit={handleOnSubmit}
-            handleOnChange={handleOnChange}
+    <div>
+      <Navbar />
+      <div className={Style["wrapper-create-playlist"]}>
+        <h3>Create Playlist</h3>
+        <div className={Style["search-bar"]}>
+          <SearchBar
+            search={search}
+            setSearch={setSearch}
+            buttonHandleSearch={buttonHandleSearch}
           />
-          <TrackList tracksSelected={tracksSelected} />
         </div>
-      </center>
-      {result ? (
-        <>
-          <h3 style={{ textAlign: "center" }}>
-            Showing {result.items.length} tracks
-          </h3>
-          {result.items.map((track, i) => {
-            return (
-              <Track
-                key={i}
-                height={track.album.images[0].height}
-                imgUrl={track.album.images[0].url}
-                title={track.name}
-                artistName={track.artists[0].name}
-                albumName={track.album.name}
-                onSelected={() => onSelect(track.uri)}
-                selected={tracksSelected.some(
-                  (trackURI) => trackURI === track.uri
-                )}
-                onDeselected={() => onDeselect(track.uri)}
-              />
-            );
-          })}
-        </>
-      ) : (
-        <h3 style={{ textAlign: "center" }}>No Tracks Show</h3>
-      )}
-    </>
+
+        <div className={Style["list-track"]}>
+          {isLoading ? (
+            <div>
+              <TrackStructure />
+              <TrackStructure />
+              <TrackStructure />
+              <TrackStructure />
+              <TrackStructure />
+            </div>
+          ) : (
+            <TrackList
+              tracks={tracks}
+              selectedTracks={selectedTracks}
+              setSelectedTracks={setSelectedTracks}
+            />
+          )}
+        </div>
+
+        <div className={Style["form-create-playlist"]}>
+          {selectedTracks.length > 0 && (
+            <FormCreatePlaylist
+              postPlaylist={postPlaylist}
+              setPostPlaylist={setPostPlaylist}
+              handleFormSubmit={handleFormSubmit}
+            />
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

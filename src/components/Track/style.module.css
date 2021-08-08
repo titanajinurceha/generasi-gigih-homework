@@ -1,32 +1,64 @@
-.trackcard{
-  margin: 0 auto;
-  display: flex;
-  justify-content: flex-start;
+.wrapper-track-list {
+  padding: 10px;
+  margin: 10px 0px;
+  /* background-color: ghostwhite; */
+  display: grid;
+  grid-template-columns: 40px 80px 3fr 1fr 1fr;
+  grid-template-rows: 30px 30px;
+  grid-template-areas:
+    "number image title  duration action"
+    "number image artist  duration action";
+  column-gap: 10px;
+  row-gap: 10px;
   align-items: center;
-  flex-direction: row;
-  margin-bottom: 2em;
-  width: 50%;
-  padding: 1em;
+  color: whitesmoke;
+  border: 1px solid grey;
+}
+
+.wrapper-track-list:hover {
+  background-color: black;
+}
+
+.track-number {
+  grid-area: number;
+  /* background-color: gray; */
+  justify-self: center;
+}
+
+.track-image {
+  grid-area: image;
+  /* background-color: gold; */
+}
+
+.track-title {
+  grid-area: title;
+  /* background-color: gray; */
+}
+.track-artist {
+  grid-area: artist;
+  /* background-color: gray; */
+}
+
+.track-duration {
+  grid-area: duration;
+  /* background-color: gray; */
+}
+.track-action {
+  grid-area: action;
+  /* background-color: gray; */
+}
+
+.track-action button {
+  padding: 10px;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.trackinfo{
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-direction: column;
-  margin-left: 0.5em;
-}
-
-.button{
-  padding: 0.5em 1.5em;
-  background-color: rgb(26, 167, 26);
-  border: 0;
+  background-color: #1db954;
   color: white;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 6px;
+  font-weight: bold;
+  margin-right: 10px;
   cursor: pointer;
-  font-size: large;
-  font-weight: 800;
+}
+
+.track-action button:hover {
+  background-color: green;
 }
