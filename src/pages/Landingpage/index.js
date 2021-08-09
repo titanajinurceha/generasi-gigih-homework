@@ -28,7 +28,7 @@ export default function Landingpage() {
   }, [dispatch, history]);
 
   return (
-    <div className={Style.wrapperHome}>
+    <div className={Style.wrapper}>
       <div className={Style.banner}>
         <h1>Music Player</h1>
         <p>welcome to landing page</p>

@@ -1,4 +1,4 @@
-.wrapper-search-bar input {
+.wrapperSearchBar input {
     border-style: none;
     padding: 10px;
     width: 250px;
@@ -7,11 +7,11 @@
     outline: none;
   }
   
-  .wrapper-search-bar button {
+  .wrapperSearchBar button {
     width: 100px;
   }
   
-  .wrapper-search-bar button:hover {
+  .wrapperSearchBar button:hover {
     background-color: green;
   }
   
