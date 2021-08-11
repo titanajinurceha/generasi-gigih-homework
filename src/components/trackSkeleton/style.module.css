@@ -11,10 +11,10 @@
     column-gap: 10px;
     row-gap: 10px;
   
-    animation: structure 1s ease infinite alternate;
+    animation: skeleton 1s ease infinite alternate;
   }
   
-  @keyframes structure {
+  @keyframes skeleton {
     to {
       opacity: 0.5;
     }

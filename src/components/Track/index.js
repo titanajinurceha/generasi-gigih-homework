@@ -19,6 +19,13 @@ export default function Track( track, id, selectedTracks, setSelectedTracks ){
         return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
       };
 
+      const convertTrackTittle = (title) => {
+        if (title.length > 25 ){
+          return title.substring(0,25) + "...";
+        }
+        return title;
+      };
+
       return (
         <div className={Style["wrapper-track-list"]}>
           <div className={Style["track-number"]}>
@@ -28,7 +35,7 @@ export default function Track( track, id, selectedTracks, setSelectedTracks ){
             <img src={track.album?.images[2].url} alt={track.name} />
           </div>
           <div className={Style["track-title"]}>
-            <p>{track?.name}</p>
+            <p>{convertTrackTittle(track.name)}</p>
           </div>
           <div className={Style["track-artist"]}>
             <p>{track.artists[0]?.name}</p>

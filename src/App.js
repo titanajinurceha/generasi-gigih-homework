@@ -7,6 +7,7 @@ import CreatePlaylist from "./pages/CreatePlaylist";
 
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { CakhraProvider } from "@chakra-ui/react";
 
 import store from "./redux/store";
 
@@ -16,18 +17,20 @@ function App() {
   return (
     <div className="app">
       <Provider store={store}>
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Landingpage />
-            </Route>
-            <PrivateRoute
-              component={CreatePlaylist}
-              path="/create-playlist"
-              exact
-            />
-          </Switch>
-        </Router>
+        <CakhraProvider>
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <Landingpage />
+              </Route>
+              <PrivateRoute
+                component={CreatePlaylist}
+                path="/create-playlist"
+                exact
+              />
+            </Switch>
+          </Router>
+        </CakhraProvider>
       </Provider>
     </div>
   )

@@ -1,7 +1,7 @@
 import React from "react";
 import Style from "./style.module.css";
 
-export default function TrackStructure(){
+export default function TrackSkeleton(){
     return(
         <div className={Style["wrapper-track-list"]}>
             <div className={Style["track-number"]}></div>

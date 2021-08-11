@@ -12,7 +12,7 @@ import { getProfile } from "../../lib/spotifyApi";
 
 import { login, storeUserData } from "../../redux/userSlice";
 
-import Style from "./style.module.css";
+import { Flex, Heading, Text, Button} from "@chakra-ui/react";
 
 export default function Landingpage() {
   let history = useHistory();
@@ -28,12 +28,27 @@ export default function Landingpage() {
   }, [dispatch, history]);
 
   return (
-    <div className={Style.wrapper}>
-      <div className={Style.banner}>
-        <h1>Music Player</h1>
-        <p>welcome to landing page</p>
-        <button onClick={loginAuthorizeSpotify}>Login</button>
-      </div>
-    </div>
+    <Flex height="100vh" alignItems="center" justifyContent="center">
+      <Flex
+        flexDirection="column"
+        background="gray.100"
+        p={20}
+        rounded={20}
+        alignItems="center"
+      >
+        <Heading mb={6}>FIND MUSIC YOU LOVE.</Heading>
+        <Text fontSize="md" mb={5}>
+          Discover millions songs on Spotify.
+        </Text>
+        <Button
+          onClick={loginAuthorizeSpotify}
+          colorScheme="pink"
+          variant="solid"
+          width="200px"
+        >
+          Login
+        </Button>
+      </Flex>
+    </Flex>
   );
 }
