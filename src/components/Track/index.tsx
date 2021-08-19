@@ -27,7 +27,7 @@ type TrackItem = {
   setSelectedTracks: (query: string[]) => void;
 };
 export default function Track({track, id, selectedTracks, setSelectedTracks}: TrackItem) {
-  const handleButtonSelect = (id: string) => {
+  const handleButtonSelect = (id: string):void => {
     let uri: string = id;
     if (selectedTracks.includes(uri)) {
       let newPlaylist: string[] = selectedTracks.filter(
@@ -48,13 +48,17 @@ export default function Track({track, id, selectedTracks, setSelectedTracks}: Tr
         <img src={track.album.images[2]?.url} alt={track?.name} />
       </div>
       <div className={Style["track-title"]}>
-        <p>{convertTrackTitle(track.name)}</p>
+        <p data-testid="track-name">{convertTrackTitle(track.name)}</p>
       </div>
       <div className={Style["track-artist"]}>
-        <p>{track.artists[0]?.name}</p>
+        <p data-testid="track-artist">{track.artists[0]?.name}</p>
+      </div>
+      <div className={Style["track-date"]}>
+        <p data-testid="track-date">{track.album.release_date}
+        </p>
       </div>
       <div className={Style["track-duration"]}>
-        {convertMusicDuration(track.duration_ms)}
+        <p data-testid="track-duration">{convertMusicDuration(track.duration_ms)}</p>
       </div>
       <div className={Style["track-action"]}>
         <button

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { Flex, Divider, IconButton, Avatar, Heading, Text } from "@chakra-ui/react";
 import { FiMenu, FiHome, FiFilePlus} from "react-icons/fi";
+import userIcon from "assets/icons/user.svg";
 import NavItem from "../navItem";
 
 export default function Sidebar() {
